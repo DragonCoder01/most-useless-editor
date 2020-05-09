@@ -12,3 +12,14 @@ To contribute to this amazing project, please follow the following rules:
  - If the feature introduces "usefullness", please consider rewriting it so it isn't usefull anymore.
  - Please create your own branch.
 
+# Building
+
+This project uses `C++`. We use `cmake` to compile it. Here is an example how compiling the program would look like:
+
+```
+mkdir build
+cd build
+cmake ..
+cmake --build .
+```
+
