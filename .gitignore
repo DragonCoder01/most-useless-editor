@@ -1,2 +1,6 @@
+# build folders
 build
+bin
+
+# ide related folders
 .vscode
