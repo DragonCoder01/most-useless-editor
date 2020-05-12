@@ -23,3 +23,4 @@ cmake ..
 cmake --build .
 ```
 
+The resulting binary is located in the `bin` folder.
