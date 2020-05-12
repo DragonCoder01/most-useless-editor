@@ -1,3 +1,0 @@
-[submodule "PDCurses"]
-	path = PDCurses
-	url = git@github.com:wmcbrine/PDCurses.git
