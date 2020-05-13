@@ -1,6 +1,8 @@
 # build folders
 build
 bin
+cmake-build-debug
 
 # ide related folders
 .vscode
+.idea
