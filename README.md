@@ -11,6 +11,7 @@ You only need two keys: `1` and `0`. You'll need to enter the ASCII representati
 To contribute to this amazing project, please follow the following rules:
  - If the feature introduces "usefullness", please consider rewriting it so it isn't usefull anymore.
  - Please create your own branch.
+ - Please commit before 1AM.
 
 # Building
 
