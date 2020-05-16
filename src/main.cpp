@@ -12,9 +12,6 @@ int main() {
 	keypad(stdscr, true); // Pass arrow keys, function keys etc. to the program
 	refresh(); // This is necessary because otherwise the screen will behave strangely
 
-//	resize_term(100, 900);
-
-
 	WINDOW *top = newwin(1, COLS, 0, 0);
 	mvwprintw(top, 0, 0, "mu-edit %d", COLS);
 	wrefresh(top);
