@@ -28,7 +28,7 @@ int main() {
 			running = false;
 		}},
 		KeyHandler{8, [&](){
-			mvwprintw(top, 0, 0, "mu-edit %s", "meh");
+			mvwprintw(top, 0, 0, "mu-edit %s", "backspace");
 			wrefresh(top);
 			edit.backspace();
 		}}
@@ -36,7 +36,7 @@ int main() {
 
 	while (running) {
 		code = getch();
-		mvwprintw(top, 0, 0, "mu-edit %d ", code);
+		mvwprintw(top, 0, 0, "mu-edit %d", code);
 		wrefresh(top);
 
 		for (auto k : keys) {

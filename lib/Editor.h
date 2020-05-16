@@ -23,32 +23,34 @@ class Editor {
 		wclear(window);
 		wmove(window, 0, 0);
 		int spaces = 0;
-		{
+
+		if (offset != 0) {
 			int tmp = 0;
 			bool break_out = false;
-			if (offset != 0) {
-				for (int i = 0; i < data.content.size(); ++i) {
-					for (int j = 0; j < 8; ++j) {
-						waddch(window, (data.content[i] & 1 << (7 - j)) ? '1' : '0');
-						tmp++;
-						if (tmp >= offset) {
-							break_out = true;
-							break;
-						}
-					}
-					if ((i + 1)%(columns + 1)!=0) {
-						waddch(window, ' ');
-						++spaces;
-					}
-					if (break_out)
+			for (int i = 0; i < data.content.size(); ++i) {
+				for (int j = 0; j < 8; ++j) {
+					waddch(window, (data.content[i] & 1 << (7 - j)) ? '1' : '0');
+					tmp++;
+					if (tmp >= offset) {
+						break_out = true;
 						break;
+					}
 				}
+				if (tmp % 8 == 0) {
+					if (i % (columns + 1) != columns) {
+						++spaces;
+						waddch(window, ' ');
+					}
+				}
+				if (break_out)
+					break;
 			}
 		}
-		int pos_x = (position.x + (int)offset + spaces) % dimensions.x;
-		int pos_y = (position.x + (int)offset + spaces) / dimensions.x;
 
-		move(pos_y + 2, pos_x);
+		int pos_x = ((int)offset + spaces) % dimensions.x;
+		int pos_y = ((int)offset + spaces) / dimensions.x;
+
+		move(position.y + pos_y + 1, position.x + pos_x + 1);
 
 		wrefresh(window);
 	}
@@ -65,6 +67,7 @@ public:
 		wrefresh(tmpwindow);
 		window = newwin(dimensions.y, dimensions.x, position.y + 1, position.x + 1);
 		wmove(window, 0, 0);
+		move(position.y + 1, position.x + 1);
 		wrefresh(window);
 	}
 
