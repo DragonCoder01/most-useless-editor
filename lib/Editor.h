@@ -87,4 +87,8 @@ public:
 		if (offset!=0) --offset;
 		output();
 	}
+
+	std::vector<uint8_t> get_raw_data() const {
+		return data.content;
+	}
 };
