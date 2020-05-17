@@ -8,13 +8,13 @@
  */
 class KeyHandler {
 	std::vector<int> keys;
-	std::function<void()> function;
+	std::function<bool(int)> function;
 public:
-	explicit KeyHandler(std::function<void()> f) : function(std::move(f)) { }
-	explicit KeyHandler(int k, std::function<void()> f) : function(std::move(f)) {
-		keys.push_back(k);
+	explicit KeyHandler(std::function<bool(int)> f) : function(std::move(f)) { }
+	explicit KeyHandler(int key, std::function<bool(int)> f) : function(std::move(f)) {
+		keys.push_back(key);
 	}
-	explicit KeyHandler(const std::vector<int> &keys_, std::function<void()> f) : function(std::move(f)) {
+	explicit KeyHandler(const std::vector<int> &keys_, std::function<bool(int)> f) : function(std::move(f)) {
 		for (auto k : keys_) {
 			keys.push_back(k);
 		}
@@ -24,11 +24,12 @@ public:
 	 *
 	 * @param k ... recently typed key
 	 */
-	void call(int k) {
+	bool call(int k) {
 		for (auto key : keys) {
 			if (k == key) {
-				function();
+				return function(k);
 			}
 		}
+		return true;
 	}
 };

@@ -5,12 +5,20 @@
 #include "util.h"
 #include "Status.h"
 
+#include <utility>
+#include <vector>
+#include <fstream>
+#include <string>
+
 class App {
 public:
 	Editor *edit;
 	Status *top;
 	Status *bottom;
-	App() {
+
+	std::vector<KeyHandler> key_handlers;
+
+	explicit App(std::vector<KeyHandler> kh) : key_handlers{std::move(kh)} {
 		initscr(); // Initialises curses
 		noecho();  // Don't echo out the typed character
 		raw();     // Also pass things like CTRL+C etc. to the program
@@ -25,7 +33,34 @@ public:
 		bottom = new Status{{0, LINES-1}, {width, 1}, "Press `q` or `ESC` to exit..."};
 	}
 
+	void start() {
+		static int run = 0;
+		if (run == 0) {
+			run++;
+			bool running = true;
+			while (running) {
+				int code = getch();
+
+				for (auto k : key_handlers) {
+					running = k.call(code);
+					if (!running) break; // break out of the for loop, so the while loop can stop
+				}
+			}
+		}
+	}
+
+	void save(const std::string& str) const {
+		std::ofstream file{str};
+		for (auto c : edit->get_raw_data()) {
+			file.put(c);
+		}
+		file.close();
+	}
+
+
 	~App() {
+		save("output.bin");
+
 		delete edit;
 		delete top;
 		delete bottom;
