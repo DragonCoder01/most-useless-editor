@@ -34,6 +34,8 @@ public:
 	}
 
 	void start() {
+		edit->load("output.bin");
+
 		static int run = 0;
 		if (run == 0) {
 			run++;
@@ -49,18 +51,8 @@ public:
 		}
 	}
 
-	void save(const std::string& str) const {
-		std::ofstream file{str};
-		for (auto c : edit->get_raw_data()) {
-			file.put(c);
-		}
-		file.close();
-	}
-
-
 	~App() {
-		save("output.bin");
-
+		edit->save("output.bin");
 		delete edit;
 		delete top;
 		delete bottom;

@@ -2,6 +2,8 @@
 
 #include <vector>
 #include <cinttypes>
+#include <string>
+#include <fstream>
 
 struct Data {
 private:
@@ -13,6 +15,7 @@ private:
 
 public:
 	std::vector<uint8_t> content;
+	size_t offset = 0;
 
 	uint8_t getByte(size_t index) {
 		if (index < 0) index = 0;
@@ -53,4 +56,37 @@ public:
 	[[nodiscard]] size_t size() const {
 		return content.size()*8;
 	}
+
+	void save(const std::string& filename) {
+		std::ofstream file{filename};
+		for (auto c : content) {
+			file.put(c);
+		}
+		file.close();
+	}
+
+	void delete_last_bit() {
+		if (offset!=0) {
+			--offset;
+			clearBit(offset);
+			if (offset % 8 == 0){
+				content.pop_back();
+			}
+		}
+	}
+
+	static Data load(const std::string& filename) {
+		std::ifstream file{filename, std::ios::binary | std::ios::in};
+		Data data;
+		int index = 0;
+
+		for (char c; file.get(c); ++index) {
+			data.setByte(index, c);
+		}
+
+		data.offset = index*8;
+		file.close();
+		return data;
+	}
+
 };

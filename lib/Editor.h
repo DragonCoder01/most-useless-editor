@@ -13,7 +13,6 @@ class Editor {
 	vec2 dimensions{};
 
 	Data data;
-	size_t offset = 0;
 
 	int columns;
 
@@ -24,14 +23,14 @@ class Editor {
 		wmove(window, 0, 0);
 		int spaces = 0;
 
-		if (offset != 0) {
+		if (data.offset != 0) {
 			int tmp = 0;
 			bool break_out = false;
 			for (int i = 0; i < data.content.size(); ++i) {
 				for (int j = 0; j < 8; ++j) {
 					waddch(window, (data.content[i] & 1 << (7 - j)) ? '1' : '0');
 					tmp++;
-					if (tmp >= offset) {
+					if (tmp >= data.offset) {
 						break_out = true;
 						break;
 					}
@@ -47,8 +46,8 @@ class Editor {
 			}
 		}
 
-		int pos_x = ((int)offset + spaces) % dimensions.x;
-		int pos_y = ((int)offset + spaces) / dimensions.x;
+		int pos_x = ((int)data.offset + spaces) % dimensions.x;
+		int pos_y = ((int)data.offset + spaces) / dimensions.x;
 
 		move(position.y + pos_y + 1, position.x + pos_x + 1);
 
@@ -71,24 +70,29 @@ public:
 		wrefresh(window);
 	}
 
+	void load(const std::string& filename) {
+		data = Data::load(filename);
+		output();
+	}
+
+	void save(const std::string& filename) {
+		data.save(filename);
+	}
+
 	void print_char(int code) {
 		if (code=='0') {
-			data.clearBit(offset);
-			++offset;
+			data.clearBit(data.offset);
+			++data.offset;
 		} else if (code=='1') {
-			data.setBit(offset);
-			++offset;
+			data.setBit(data.offset);
+			++data.offset;
 		}
 
 		output();
 	}
 
 	void backspace() {
-		if (offset!=0) --offset;
+		data.delete_last_bit();
 		output();
-	}
-
-	std::vector<uint8_t> get_raw_data() const {
-		return data.content;
 	}
 };

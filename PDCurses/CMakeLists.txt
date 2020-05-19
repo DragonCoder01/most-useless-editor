@@ -2,7 +2,7 @@ project(PDCurses)
 
 cmake_minimum_required(VERSION 3.0)
 
-if (WIN32 OR MSVC)
+if (WIN32 OR MSVC OR MINGW)
 
     set (SOURCE_FILES
         pdcurses/addch.c
